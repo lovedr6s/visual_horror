@@ -1,17 +1,17 @@
 import pygame
-from text.dialoge import text_box
+from text_box.box import text_box
 
 pygame.init()
 display = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Horror Game")
 clock = pygame.time.Clock()
 lines = [
-    ['image', ['I see you',
+    ['text_box/images/aww.png', ['I see you',
                'I see you',
                'you thought i cant find you?',
                ]
     ],
-    ['image', ['I see you',
+    ['text_box/images/aww.png', ['I see you',
                'im going to find you',]
     ],
 
