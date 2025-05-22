@@ -3,7 +3,7 @@ import pygame
 
 def bottom_text(display, lines):
     pygame.draw.rect(display, (139, 0, 0), (50, 380, 700, 2))
-    font = pygame.font.Font('game/text_box/fonts/font.otf', 30)
+    font = pygame.font.Font('game/fonts/font.otf', 30)
 
     for i, line in enumerate(lines):
         text = font.render(line, True , (139, 10, 10))

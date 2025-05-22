@@ -7,13 +7,15 @@ from game.level_settings import load_level, save_level
 RED = (130, 10, 10)
 GRAY = (138, 100, 100)
 DARK_GRAY = (100, 100, 0)
-text_font = "game/text_box/fonts/font.otf"
+text_font = "game/fonts/font.otf"
+
 class Button:
     def __init__(self, text, pos, size, callback):
         self.rect = pygame.Rect(pos, size)
         self.text = text
         self.callback = callback
         self.hovered = False
+        self.sound = pygame.mixer.Sound("game/menu/sounds/button.mp3")
 
     def draw(self, surface):
         color = DARK_GRAY if self.hovered else GRAY
@@ -26,6 +28,8 @@ class Button:
     def update(self, mouse_pos, mouse_click):
         self.hovered = self.rect.collidepoint(mouse_pos)
         if self.hovered and mouse_click:
+            self.sound.play()
+            pygame.time.wait(1000)
             self.callback()
 
 def _load_and_exit_menu(state):

@@ -1,12 +1,14 @@
 import pygame
 from game.text_box.box import scene
 from game.level_settings import load_text_file
-from game.game_menu import menu, create_menu_buttons
+from game.menu.game_menu import menu, create_menu_buttons
 
 
 pygame.init()
-display = pygame.display.set_mode((800, 600))
+icon = pygame.image.load('game/.icon.png')
+pygame.display.set_icon(icon)
 pygame.display.set_caption("Horror Game")
+display = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 content = load_text_file('game/text_box/dialoges/text.json')
 
@@ -22,11 +24,11 @@ def update_scene(state, buttons):
             pass
 
 def main():
-    state = {
+    state = {   
         'level': 0,
         'is_menu': True
     }
-    buttons = create_menu_buttons(state)  # ← теперь передаём состояние
+    buttons = create_menu_buttons(state)
 
     while True:
         display.fill((0, 0, 0))
