@@ -11,12 +11,15 @@ clock = pygame.time.Clock()
 content = load_text_file('game/text_box/dialoges/text.json')
 
 
-def update_scene(level, is_menu, buttons):
-    if is_menu:
+def update_scene(state, buttons):
+    if state['is_menu']:
         menu(display, buttons)
         
     else:
-        scene(display, content[level])
+        try:
+            scene(display, content[state['level']])
+        except IndexError:
+            pass
 
 def main():
     state = {
@@ -40,7 +43,7 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     state['is_menu'] = not state['is_menu']
 
-        update_scene(state['level'], state['is_menu'], buttons)
+        update_scene(state, buttons)
         pygame.display.flip()
         clock.tick(60)
 

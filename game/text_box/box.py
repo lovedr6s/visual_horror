@@ -13,7 +13,7 @@ def bottom_text(display, lines):
 
 def image_pixelate(image):
     width, height = image.get_size()
-    pixelization_factor = 30
+    pixelization_factor = 10
     for y in range(0, height, pixelization_factor):
         for x in range(0, width, pixelization_factor):
             color = image.get_at((x, y))
