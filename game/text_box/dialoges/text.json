@@ -1,6 +1,6 @@
 [
     {
-        "image": "text_box/images/aww.png",
+        "image": "game/text_box/images/aww.png",
         "text": [
             "I see you",
             "I see you",
@@ -8,7 +8,6 @@
         ]
     },
     {
-        "image": "text_box/images/aww.png",
         "text": [
             "I see you",
             "im going to find you"

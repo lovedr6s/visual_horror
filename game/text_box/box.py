@@ -3,7 +3,7 @@ import pygame
 
 def bottom_text(display, lines):
     pygame.draw.rect(display, (139, 0, 0), (50, 380, 700, 2))
-    font = pygame.font.Font('text_box/fonts/font.otf', 30)
+    font = pygame.font.Font('game/text_box/fonts/font.otf', 30)
 
     for i, line in enumerate(lines):
         text = font.render(line, True , (139, 10, 10))
@@ -27,10 +27,13 @@ def image_box(display, image_path):
     display.blit(image, (75, 50))
 
 
-def text_box(display, lines):
-    result = []
-    image_box(display, lines['image'])
-    for line in lines['text']:
+def scene(display, scene_data):
+    clean_text = []
+    try:
+        image_box(display, scene_data['image'])
+    except KeyError:
+        pass
+    for line in scene_data['text']:
         for j in range(0, len(line), 27):
-                result.append(line[j:j + 27].strip())
-    bottom_text(display, result)
+                clean_text.append(line[j:j + 27].strip())
+    bottom_text(display, clean_text)
