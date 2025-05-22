@@ -1,21 +1,17 @@
 import pygame
 from text_box.box import text_box
+import json
 
 pygame.init()
 display = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Horror Game")
 clock = pygame.time.Clock()
-lines = [
-    ['text_box/images/aww.png', ['I see you',
-               'I see you',
-               'you thought i cant find you?',
-               ]
-    ],
-    ['text_box/images/aww.png', ['I see you',
-               'im going to find you',]
-    ],
+def load_text_file(file_path):
+    with open(file_path, 'r') as file:
+        text = json.load(file)
+    return text
 
-]
+lines = load_text_file('text_box/dialoges/text.json')
 
 def main():
     level = 0
