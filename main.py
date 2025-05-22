@@ -10,7 +10,10 @@ pygame.mixer.init(frequency=44100, size=-16, channels=2)
 icon = pygame.image.load('game/.icon.png')
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Horror Game")
-display = pygame.display.set_mode((800, 600))
+GAME_WIDTH = 800
+GAME_HEIGHT = 600
+screen = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT), pygame.RESIZABLE)
+game_surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
 clock = pygame.time.Clock()
 content = load_text_file('game/text_box/dialoges/text.json')
 
@@ -24,12 +27,12 @@ def generate_white_noise(volume, sample_rate=44100):
     return pygame.sndarray.make_sound(stereo_wave)
 
 
-def update_scene(state, buttons):
+def update_scene(state, buttons, offset_x_y):
     if state['is_menu']:
-        menu(display, buttons)
+        menu(game_surface, buttons, offset_x_y)
     else:
         try:
-            scene(display, content[state['level']])
+            scene(game_surface, content[state['level']])
         except IndexError:
             pass
 
@@ -43,7 +46,6 @@ def main():
     creepy_noise = generate_white_noise(volume=0.05)
     creepy_noise.play(loops=-1)
     while True:
-        display.fill((0, 0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -56,8 +58,12 @@ def main():
                     state['level'] += 1
                 if event.key == pygame.K_ESCAPE:
                     state['is_menu'] = not state['is_menu']
-
-        update_scene(state, buttons)
+        game_surface.fill((0, 0, 0))
+        window_width, window_height = screen.get_size()
+        x, y = (window_width - GAME_WIDTH) // 2, (window_height - GAME_HEIGHT) // 2
+        screen.fill((0, 0, 0))
+        update_scene(state, buttons, (x, y))
+        screen.blit(game_surface, (x, y))
         pygame.display.flip()
         clock.tick(60)
 

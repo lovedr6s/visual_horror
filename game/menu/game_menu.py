@@ -59,9 +59,11 @@ def create_menu_buttons(state):
     return [load_button, save_button, quit_button, reset_game]
 
 
-def menu(display, buttons):
+def menu(display, buttons, offset_x_y):
     text = pygame.font.Font(text_font, 50).render("Menu", True, RED)
     display.blit(text, (310, 100))
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    real_mouse_position = mouse_x - offset_x_y[0], mouse_y - offset_x_y[1]
     for button in buttons:
         button.draw(display)
-        button.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed()[0])
+        button.update(real_mouse_position, pygame.mouse.get_pressed()[0])
