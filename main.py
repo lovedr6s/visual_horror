@@ -1,6 +1,7 @@
 import pygame
 from game.text_box.box import scene
-from game.level_settings import load_level, save_level, load_text_file
+from game.level_settings import load_text_file
+from game.game_menu import menu, create_menu_buttons
 
 
 pygame.init()
@@ -9,26 +10,37 @@ pygame.display.set_caption("Horror Game")
 clock = pygame.time.Clock()
 content = load_text_file('game/text_box/dialoges/text.json')
 
-def update_scene(level):
-    scene(display, content[level])
+
+def update_scene(level, is_menu, buttons):
+    if is_menu:
+        menu(display, buttons)
+        
+    else:
+        scene(display, content[level])
 
 def main():
-    level = load_level()
+    state = {
+        'level': 0,
+        'is_menu': True
+    }
+    buttons = create_menu_buttons(state)  # ← теперь передаём состояние
+
     while True:
+        display.fill((0, 0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    level += 1
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if not state['is_menu']:
+                    state['level'] += 1
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
-                    level += 1
+                if event.key in (pygame.K_SPACE, pygame.K_RETURN):
+                    state['level'] += 1
                 if event.key == pygame.K_ESCAPE:
-                    print("Escape key pressed")
-        display.fill((0, 0, 0))
-        update_scene(level)
+                    state['is_menu'] = not state['is_menu']
+
+        update_scene(state['level'], state['is_menu'], buttons)
         pygame.display.flip()
         clock.tick(60)
 

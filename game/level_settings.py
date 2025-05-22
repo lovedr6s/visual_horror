@@ -1,6 +1,6 @@
 import json
 
-def save_level(level):
+def save_level(level=0):
     with open('game/saves/save_file.txt', 'w') as file:
         file.write(str(level))
 
@@ -8,7 +8,6 @@ def save_level(level):
 def load_level():
     with open('game/saves/save_file.txt', 'r') as file:
         level = file.read()
-        print(level)
     return int(level)
 
 
