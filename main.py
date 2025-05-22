@@ -1,16 +1,27 @@
+from turtle import st
 import pygame
 from game.text_box.box import scene
 from game.level_settings import load_text_file
 from game.menu.game_menu import menu, create_menu_buttons
-
+import numpy as np
 
 pygame.init()
+pygame.mixer.init(frequency=44100, size=-16, channels=2)
 icon = pygame.image.load('game/.icon.png')
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Horror Game")
 display = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 content = load_text_file('game/text_box/dialoges/text.json')
+
+def generate_white_noise(volume, sample_rate=44100):
+    samples = sample_rate * 2
+    noise = np.random.normal(0, 1, samples) * volume
+    noise = np.clip(noise, -1.0, 1.0)
+    wave = np.int16(noise * 32767)
+    stereo_wave = np.column_stack((wave, wave))
+    print(stereo_wave.shape)
+    return pygame.sndarray.make_sound(stereo_wave)
 
 
 def update_scene(state, buttons):
@@ -29,7 +40,8 @@ def main():
         'is_menu': True
     }
     buttons = create_menu_buttons(state)
-
+    creepy_noise = generate_white_noise(volume=0.05)
+    creepy_noise.play(loops=-1)
     while True:
         display.fill((0, 0, 0))
         for event in pygame.event.get():
