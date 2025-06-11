@@ -1,38 +1,9 @@
-import pytest
 import pygame
 import sys
 from unittest import mock
 import importlib
 import os
 
-# Patch pygame modules that require a display/audio device for headless testing
-@pytest.fixture(autouse=True)
-def patch_pygame(monkeypatch):
-    monkeypatch.setattr(pygame, "init", lambda: None)
-    monkeypatch.setattr(pygame.mixer, "init", lambda *a, **kw: None)
-    monkeypatch.setattr(pygame.display, "set_icon", lambda icon: None)
-    monkeypatch.setattr(pygame.display, "set_caption", lambda caption: None)
-    monkeypatch.setattr(pygame.display, "set_mode", lambda *a, **kw: mock.Mock())
-    monkeypatch.setattr(pygame.time, "Clock", lambda: mock.Mock())
-    monkeypatch.setattr(pygame.image, "load", lambda path: mock.Mock())
-    monkeypatch.setattr(pygame.sndarray, "make_sound", lambda arr: mock.Mock(spec=pygame.mixer.Sound))
-    monkeypatch.setattr(pygame, "QUIT", 12)
-    monkeypatch.setattr(pygame, "MOUSEBUTTONDOWN", 5)
-    monkeypatch.setattr(pygame, "KEYDOWN", 2)
-    monkeypatch.setattr(pygame, "K_SPACE", 32)
-    monkeypatch.setattr(pygame, "K_RETURN", 13)
-    monkeypatch.setattr(pygame, "K_ESCAPE", 27)
-    monkeypatch.setattr(pygame, "RESIZABLE", 0)
-    monkeypatch.setattr(pygame, "display", mock.Mock())
-    monkeypatch.setattr(pygame, "event", mock.Mock())
-    monkeypatch.setattr(pygame, "mixer", mock.Mock())
-    monkeypatch.setattr(pygame, "Surface", lambda *a, **kw: mock.Mock())
-    monkeypatch.setattr(pygame, "time", mock.Mock())
-    monkeypatch.setattr(pygame, "image", mock.Mock())
-    monkeypatch.setattr(pygame, "sndarray", mock.Mock())
-    monkeypatch.setattr(pygame, "mixer", mock.Mock())
-    monkeypatch.setattr(pygame, "display", mock.Mock())
-    monkeypatch.setattr(pygame, "quit", lambda: None)
 
 # Import after patching
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
