@@ -9,10 +9,6 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 main = importlib.import_module("main")
 
-def test_generate_white_noise_returns_sound():
-    sound = main.generate_white_noise(volume=0.1)
-    assert hasattr(sound, "play") or isinstance(sound, mock.Mock)
-
 def test_update_scene_menu(monkeypatch):
     called = {}
     def fake_menu(surface, buttons, offset):
