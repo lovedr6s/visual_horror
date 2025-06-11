@@ -1,5 +1,4 @@
 import pytest
-import numpy as np
 import pygame
 import sys
 from unittest import mock
