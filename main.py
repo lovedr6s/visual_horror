@@ -1,9 +1,11 @@
-import pygame
-from game.text_box.box import scene
-from game.level_settings import load_text_file
-from game.menu.game_menu import menu, create_menu_buttons
-import numpy as np
+import contextlib
 
+import numpy as np
+import pygame
+
+from game.level_settings import load_text_file
+from game.menu.game_menu import create_menu_buttons, menu
+from game.text_box.box import scene
 
 pygame.init()
 pygame.mixer.init(frequency=44100, size=-16, channels=2)
@@ -18,7 +20,8 @@ clock = pygame.time.Clock()
 content = load_text_file('game/text_box/dialoges/text.json')
 
 
-def generate_white_noise(volume, sample_rate=44100):
+def generate_white_noise(volume: int, sample_rate=44100) -> pygame.mixer.Sound:
+    """Generate white noise sound."""
     samples = sample_rate * 2
     noise = np.random.normal(0, 1, samples) * volume
     noise = np.clip(noise, -1.0, 1.0)
@@ -27,17 +30,20 @@ def generate_white_noise(volume, sample_rate=44100):
     return pygame.sndarray.make_sound(stereo_wave)
 
 
-def update_scene(state, buttons, offset_x_y):
+def update_scene(state: dict, buttons, offset_x_y):
+    """Update the game scene based on the current state."""
     if state['is_menu']:
         menu(game_surface, buttons, offset_x_y)
     else:
         try:
             scene(game_surface, content[state['level']])
         except IndexError:
-            pass
+            with contextlib.suppress(IndexError):
+                scene(game_surface, content[state['level']])
 
 
-def main():
+def main() -> None:
+    """Main function to run the horror game."""
     state = {
         'level': 0,
         'is_menu': True
@@ -50,9 +56,12 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if not state['is_menu']:
-                    state['level'] += 1
+            if (
+                event.type == pygame.MOUSEBUTTONDOWN
+                and event.button == 1
+                and not state['is_menu']
+            ):
+                state['level'] += 1
             if event.type == pygame.KEYDOWN:
                 if event.key in (pygame.K_SPACE, pygame.K_RETURN):
                     state['level'] += 1

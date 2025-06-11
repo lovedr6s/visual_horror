@@ -1,7 +1,10 @@
+import contextlib
+
 import pygame
 
 
 def bottom_text(display, lines):
+    """Display text at the bottom of the screen."""
     pygame.draw.rect(display, (139, 0, 0), (50, 380, 700, 2))
     font = pygame.font.Font('game/fonts/font.otf', 30)
 
@@ -12,8 +15,9 @@ def bottom_text(display, lines):
 
 
 def image_pixelate(image):
+    """Apply pixelation effect to an image."""
     width, height = image.get_size()
-    pixelization_factor = 10
+    pixelization_factor = 5
     for y in range(0, height, pixelization_factor):
         for x in range(0, width, pixelization_factor):
             color = image.get_at((x, y))
@@ -22,6 +26,7 @@ def image_pixelate(image):
 
 
 def image_box(display, image_path):
+    """Load and display an image with pixelation effect."""
     image = pygame.image.load(image_path)
     image = pygame.transform.scale(image, (650, 300))
     image_pixelate(image)
@@ -29,11 +34,13 @@ def image_box(display, image_path):
 
 
 def scene(display, scene_data):
+    """Render the scene with an image and text."""
     clean_text = []
     try:
         image_box(display, scene_data['image'])
     except KeyError:
-        pass
+        with contextlib.suppress(KeyError):
+            image_box(display, 'game/text_box/images/empty.png')
     for line in scene_data['text']:
         for j in range(0, len(line), 27):
             clean_text.append(line[j:j + 27].strip())

@@ -9,4 +9,48 @@ dependencies = [
     "numpy>=2.2.6",
     "pillow>=11.2.1",
     "pygame>=2.6.1",
+    "ruff>=0.11.13",
 ]
+
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py312"
+lint.select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "W",    # pycodestyle warnings
+    "C90",  # mccabe complexity
+    "I",    # isort
+    "N",    # pep8-naming
+    "D",    # pydocstyle
+    "UP",   # pyupgrade
+    "S",    # bandit
+    "B",    # bugbear
+    "A",    # builtins
+    "C4",   # comprehensions
+    "T20",  # flake8-print, flake8-tidy-imports
+    "SIM",  # flake8-simplify
+    # "Q",  # flake8-quotes (removed to disable ""/'' checking)
+    "PL",   # pylint
+    "RUF",  # ruff-specific rules
+]
+lint.ignore = [
+    "D100",  # Missing docstring in public module
+    "D104",  # Missing docstring in public package
+]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    "venv",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

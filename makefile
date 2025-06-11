@@ -1,5 +1,5 @@
 lint: 
-	uv run flake8 . --exclude=.venv,__pycache__,.git
+	uv run ruff check .
 
 play:
 	uv run main.py
